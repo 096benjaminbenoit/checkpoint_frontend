@@ -20,7 +20,10 @@ export default function CreateCountryForm() {
 
     createCountry({
       variables: {
-        data: { ...formJSON, continent: { id: parseInt(formJSON.continent) } },
+        data: {
+          ...formJSON,
+          continent: { id: parseInt(formJSON.continent) },
+        },
       },
     }).then((res) => {
       router.push(`/country/${res.data?.addCountry.code}`);
