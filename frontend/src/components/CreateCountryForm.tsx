@@ -1,17 +1,17 @@
 import {
   useContinentsQuery,
   useCreateCountryMutation,
+  CountriesDocument,
+  CountriesQuery,
 } from "@/graphql/generated/schema";
-import { useRouter } from "next/router";
-import { FormEvent } from "react";
+import { FormEvent, useRef } from "react";
 
 export default function CreateCountryForm() {
   const [createCountry] = useCreateCountryMutation();
   const { data } = useContinentsQuery();
+  const formRef = useRef<HTMLFormElement>(null);
 
   const continents = data?.continents || [];
-
-  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,14 +25,36 @@ export default function CreateCountryForm() {
           continent: { id: parseInt(formJSON.continent) },
         },
       },
-    }).then((res) => {
-      router.push(`/country/${res.data?.addCountry.code}`);
+      update: (cache, { data }) => {
+        if (!data || !data.addCountry) return;
+
+        const existingCountries = cache.readQuery<CountriesQuery>({
+          query: CountriesDocument,
+        });
+
+        if (existingCountries && existingCountries.countries) {
+          cache.writeQuery({
+            query: CountriesDocument,
+            data: {
+              countries: [...existingCountries.countries, data.addCountry],
+            },
+          });
+        }
+
+        if (formRef.current) {
+          formRef.current.reset();
+        }
+      },
     });
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="p-4 space-y-4 md:w-1/2 mx-auto">
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit}
+        className="p-4 space-y-4 md:w-1/2 mx-auto"
+      >
         <label className="input input-bordered flex items-center gap-2">
           <input
             name="name"

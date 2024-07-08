@@ -9,8 +9,6 @@ export default function Home() {
 
   const countries = data?.countries || [];
 
-  console.log(countries);
-
   return (
     <DefaultLayout title="Home">
       <h1 className="font-semibold text-4xl text-center py-10">
