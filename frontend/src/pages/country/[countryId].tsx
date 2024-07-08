@@ -1,3 +1,4 @@
+// @ts-nocheck
 import CountryDetailsCard from "@/components/CountryDetailsCard";
 import { useCountryByCodeQuery } from "@/graphql/generated/schema";
 import DefaultLayout from "@/layouts/defaultLayout";
@@ -13,21 +14,24 @@ export default function CountryDetailsPage() {
 
   if (loading) return "Chargement...";
 
-  if (!data) return "Aucun pays n'a pu être trouvé";
-
-  const country = data.country;
+  const country = data?.country || [];
 
   return (
     <DefaultLayout title="Country details">
-      <div className="flex justify-center pt-20">
-        <CountryDetailsCard
-          code={countryId as string}
-          // @ts-ignore
-          continent={country.continent}
-          emoji={country.emoji}
-          name={country.name}
-        />
-      </div>
+      {!data ? (
+        <h2 className="font-semibold text-center text-2xl py-10 text-red-500">
+          Oups! No country found for this code
+        </h2>
+      ) : (
+        <div className="flex justify-center pt-20">
+          <CountryDetailsCard
+            code={countryId as string}
+            continent={country.continent}
+            emoji={country.emoji}
+            name={country.name}
+          />
+        </div>
+      )}
     </DefaultLayout>
   );
 }

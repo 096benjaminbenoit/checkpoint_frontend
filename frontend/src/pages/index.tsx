@@ -16,19 +16,25 @@ export default function Home() {
       <h1 className="font-semibold text-4xl text-center py-10">
         All countries
       </h1>
-      <div className="flex flex-wrap gap-6 justify-center pb-10">
-        {countries.map((country) => (
-          <CountryCard
-            countryId={country.id}
-            emoji={country.emoji}
-            // @ts-ignore
-            continent={country.continent}
-            code={country.code}
-            name={country.name}
-            key={country.id}
-          />
-        ))}
-      </div>
+      {!data ? (
+        <h2 className="font-semibold text-center text-2xl text-red-500">
+          Oups! No countries found
+        </h2>
+      ) : (
+        <div className="flex flex-wrap gap-6 justify-center pb-10">
+          {countries.map((country) => (
+            <CountryCard
+              countryId={country.id}
+              emoji={country.emoji}
+              // @ts-ignore
+              continent={country.continent}
+              code={country.code}
+              name={country.name}
+              key={country.id}
+            />
+          ))}
+        </div>
+      )}
     </DefaultLayout>
   );
 }
