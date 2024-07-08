@@ -13,7 +13,10 @@ export default function Home() {
 
   return (
     <DefaultLayout title="Home">
-      <div className="flex flex-wrap gap-6 justify-center">
+      <h1 className="font-semibold text-4xl text-center py-10">
+        All countries
+      </h1>
+      <div className="flex flex-wrap gap-6 justify-center pb-10">
         {countries.map((country) => (
           <CountryCard
             countryId={country.id}

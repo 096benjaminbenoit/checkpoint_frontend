@@ -16,7 +16,7 @@ export default function CountryCard({
   return (
     <Link
       href={`/country/${code}`}
-      className="card bg-base-100 w-72 md:w-96 shadow-xl"
+      className="card bg-base-100 w-72 md:w-96 shadow-xl border"
     >
       <figure className="px-10 pt-10 text-7xl">{emoji}</figure>
       <div className="card-body items-center text-center">
